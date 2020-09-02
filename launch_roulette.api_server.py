@@ -189,7 +189,6 @@ def execute_n_close_roulette_api_fun():
             resolve_data['Result_whereIsBall'] = currentRoulette.whereIsBall
             currentRoulette.close_roulette()
     except:
-        raise
         resolve_data = {'status_code':400, 'data':"ERROR", 'meaning':"bad query ERROR, key value 'rouletteId' needed"}
     
     return jsonify(resolve_data)
@@ -207,12 +206,14 @@ if __name__ == "__main__":
     os.environ['roulette_api_logPath'] = "Log_file__{}.txt".format(datetime.utcnow().replace(tzinfo=None, microsecond=0).isoformat())
     os.environ['roulette_api_port'] = "5000"
     os.environ['roulette_max_bet_value'] = "10000"
-    inicialize_log(msg="Iniciando log...")
+    inicialize_log(msg="Initiating log...")
     allRoulettes = []
     try:
         app.run(port=os.environ['roulette_api_port'])
     except OSError as e:
-        if str(e) == "[Errno 98] Address already in use":
+        if str(e) == "[Error 98] Address already in use":
             print("ERROR: (Address internet port {} already in use) ---please run: \n\t'killall -9 python3' on linux, \n\t'Taskkill /IM python3.exe /F' on Windows".format(os.environ['roulette_api_port']))
         else:
             raise
+    write_to_log("no log procedure embedded.")
+    write_to_log("Ending log.")
